@@ -7,7 +7,9 @@ RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout server.key -out 
 FROM alpine:3.19
 RUN apk update && apk add nginx
 COPY --from=0 /keys/ /etc/ssl/private/
-copy /conf/nginx.conf /etc/nginx/nginx.conf
+COPY /conf/nginx.conf /etc/nginx/http.d
+
+# COPY  rr.php /etc
 
 COPY /conf/index.html /var/www/http/
 
