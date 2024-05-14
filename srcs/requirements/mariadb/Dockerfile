@@ -9,6 +9,7 @@ RUN mariadb-install-db --user=mysql --basedir=/usr --datadir=/var/lib/mysql
 COPY	tools/auto_install.sh /usr/local/bin/install_mariadb
 RUN		chmod +x /usr/local/bin/install_mariadb
 
+EXPOSE 3306
 # This change allows MariaDB to listen for incoming connections on all network interfaces, instead of only on localhost.
 # When used with -i, sed directly modifies the contents of the specified file instead of writing the output to standard output (stdout).
 RUN		sed -i "s/#bind-address/bind-address/" /etc/my.cnf.d/mariadb-server.cnf;\
