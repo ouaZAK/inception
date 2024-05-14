@@ -11,9 +11,12 @@ services:
       - 443:443
     env_file:
       - .env
+    env_file:
+      - .env
     networks:
       - InceptionNetwork
     restart: always
+
 
 # wordpress service
   wordpress:
@@ -26,10 +29,15 @@ services:
       - 9000:9000
     env_file:
       - .env
+    ports:
+      - 9000:9000
+    env_file:
+      - .env
     volumes:
       - wp:/var/www/html/
     networks:
       - InceptionNetwork
+
 
 # database layer for wordpress >> mariadb
   mariadb:
@@ -38,10 +46,15 @@ services:
     restart: always
     env_file:
       - .env
+    env_file:
+      - .env
     volumes:
       - db:/var/lib/mysql
     networks:
       - InceptionNetwork
+    ports:
+      - 3306:3306  
+
     ports:
       - 3306:3306  
 
@@ -53,11 +66,13 @@ volumes:
       type: none
       o: bind
       device: /home/zak/data/wp/
+      device: /home/zak/data/wp/
   db:
     driver: local
     driver_opts:
       type: none
       o: bind
+      device: /home/zak/data/db/
       device: /home/zak/data/db/
 networks:
   InceptionNetwork:
