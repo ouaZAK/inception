@@ -10,6 +10,6 @@ FLUSH PRIVILEGES;" > file.sql
 
 mariadbd --user=mysql --bootstrap < file.sql
 
-# rm file.sql
+rm file.sql
 
 exec mariadbd --user=mysql

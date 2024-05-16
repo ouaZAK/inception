@@ -1,80 +1,87 @@
 services:
-# nginx service
   nginx:
     depends_on:
       - wordpress
     build: ./requirements/nginx
     container_name: nginx
-    volumes:
-      - wp:/var/www/html/
     ports:
       - 443:443
-    env_file:
-      - .env
-    env_file:
-      - .env
     networks:
-      - InceptionNetwork
+      - inceptionNetwork
+    volumes:
+      - wp:/var/www/html/
+    env_file:
+      - .env
     restart: always
-
-
-# wordpress service
+  
   wordpress:
     depends_on:
       - mariadb
     build: ./requirements/wordpress
     container_name: wordpress
     restart: always
-    ports:
-      - 9000:9000
-    env_file:
-      - .env
-    ports:
-      - 9000:9000
     env_file:
       - .env
     volumes:
       - wp:/var/www/html/
     networks:
-      - InceptionNetwork
+      - inceptionNetwork
 
-
-# database layer for wordpress >> mariadb
   mariadb:
     build: ./requirements/mariadb
     container_name: mariadb
-    restart: always
     env_file:
       - .env
-    env_file:
-      - .env
-    volumes:
-      - db:/var/lib/mysql
     networks:
-      - InceptionNetwork
-    ports:
-      - 3306:3306  
+      - inceptionNetwork
+    volumes:
+      - db:/var/lib/mysql/
+    restart: always
 
+  portainer:
+    build: ./requirements/bonus/portainer
+    container_name: portainer
+    volumes:
+      - portainer:/data/
+      - /var/run/docker.sock:/var/run/docker.sock
     ports:
-      - 3306:3306  
+      - 9443:9443
+    networks:
+      - inceptionNetwork
+    restart: always
 
-# create volumes and networks
+  adminer:
+    depends_on:
+      - mariadb
+    build: ./requirements/bonus/adminer
+    container_name: adminer
+    ports:
+      - 8080:8080
+    networks:
+      - inceptionNetwork
+    restart: always
+
 volumes:
-  wp:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: /home/zak/data/wp/
-      device: /home/zak/data/wp/
   db:
     driver: local
     driver_opts:
       type: none
       o: bind
       device: /home/zak/data/db/
-      device: /home/zak/data/db/
+  wp:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/zak/data/wp/
+  portainer:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/zak/data/portainer/
+
 networks:
-  InceptionNetwork:
-    name: InceptionNetwork
+  inceptionNetwork:
+    name: inceptionNetwork
     driver: bridge
