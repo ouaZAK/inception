@@ -9,10 +9,8 @@ RUN apk update && apk add nginx
 COPY --from=0 /keys/ /etc/ssl/private/
 COPY /conf/nginx.conf /etc/nginx/http.d
 
-# COPY  rr.php /etc
-
 COPY /conf/index.html /var/www/http/
 
 EXPOSE 443
 
-CMD [ "nginx", "-g", "daemon off;"]
+CMD ["nginx", "-g", "daemon off;"]

@@ -67,19 +67,19 @@ volumes:
     driver_opts:
       type: none
       o: bind
-      device: /home/zak/data/db/
+      device: /home/zouaraqa/data/db/
   wp:
     driver: local
     driver_opts:
       type: none
       o: bind
-      device: /home/zak/data/wp/
+      device: /home/zouaraqa/data/wp/
   portainer:
     driver: local
     driver_opts:
       type: none
       o: bind
-      device: /home/zak/data/portainer/
+      device: /home/zouaraqa/data/portainer/
 
 networks:
   inceptionNetwork:

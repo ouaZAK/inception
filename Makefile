@@ -36,9 +36,9 @@
 all: creat build
 
 creat:
-	@if [ ! -d "/home/zak/data/wp" ]; then mkdir -p "/home/zak/data/wp" && chmod 777 "/home/zak/data/wp"; fi; 
-	@if [ ! -d "/home/zak/data/db" ]; then mkdir -p "/home/zak/data/db" && chmod 777 "/home/zak/data/db"; fi; 
-	@if [ ! -d "/home/zak/data/portainer" ]; then mkdir -p "/home/zak/data/portainer" && chmod 777 "/home/zak/data/portainer"; fi;
+	@if [ ! -d /home/zouaraqa/data/wp ]; then mkdir -p /home/zouaraqa/data/wp && chmod 777 /home/zouaraqa/data/wp; fi; 
+	@if [ ! -d /home/zouaraqa/data/db ]; then mkdir -p /home/zouaraqa/data/db && chmod 777 /home/zouaraqa/data/db; fi; 
+	@if [ ! -d /home/zouaraqa/data/portainer ]; then mkdir -p /home/zouaraqa/data/portainer && chmod 777 /home/zouaraqa/data/portainer; fi;
 
 build:
 	docker compose -f ./srcs/docker-compose.yml up -d
@@ -53,15 +53,17 @@ down:
 	docker compose -f ./srcs/docker-compose.yml down
 
 clean: down
-	sudo rm -rf "/home/zak/data/wp"
-	sudo rm -rf /home/zak/data/db
+	sudo rm -rf /home/zouaraqa/data/wp
+	sudo rm -rf /home/zouaraqa/data/db
 
 fclean: down
 	docker rm -f $(docker ps -qa) || true
 	docker rmi $(docker images) || true
 	docker system prune -af
-	sudo rm -rf "/home/zak/data/wp"
-	sudo rm -rf "/home/zak/data/db"
+	docker network prune --force
+	docker volume prune --force
+	sudo rm -rf /home/zouaraqa/data/wp
+	sudo rm -rf /home/zouaraqa/data/db
 
 re: fclean all
 
